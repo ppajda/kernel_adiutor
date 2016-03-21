@@ -52,7 +52,7 @@ PopupCardView.DPopupCard.OnDPopupCardListener, SwitchCardView.DSwitchCard.OnDSwi
     private PopupCardView.DPopupCard mBclMaxFreqCard;
     private SeekBarCardView.DSeekBarCard mBclVphLowCard, mBclVphHighCard;
 
-    private SeekBarCardView.DSeekBarCard mBlxCard;
+    private SeekBarCardView.DSeekBarCard mBlxCard, mACLevelCard, mUSBLevelCard;
 
     private SwitchCardView.DSwitchCard mCustomChargeRateEnableCard;
     private SeekBarCardView.DSeekBarCard mChargingRateCard;
@@ -71,6 +71,7 @@ PopupCardView.DPopupCard.OnDPopupCardListener, SwitchCardView.DSwitchCard.OnDSwi
         batteryTemperatureInit();
         batteryChargingTypeInit();
         if (Battery.hasForceFastCharge()) forceFastChargeInit();
+        if (Battery.hasChargeLevelControl()) chargeLevelControlInit();
         if (Battery.hasBlx()) blxInit();
         if (Battery.hasChargeRate()) chargerateInit();
 
@@ -150,6 +151,41 @@ PopupCardView.DPopupCard.OnDPopupCardListener, SwitchCardView.DSwitchCard.OnDSwi
         mForceFastChargeCard.setOnDSwitchCardListener(this);
 
         addView(mForceFastChargeCard);
+    }
+
+    private void chargeLevelControlInit(){
+        DDivider mChargeLevelCard = new DDivider();
+        mChargeLevelCard.setText(getString(R.string.charge_levels));
+        mChargeLevelCard.setDescription(getString(R.string.charge_levels_summary));
+        addView(mChargeLevelCard);
+
+
+        if (Battery.hasChargeLevelControlAC()) {
+            List<String> list = new ArrayList<>();
+            for (int i = 0; i < 2200; i+=10) list.add(String.valueOf(i));
+
+            mACLevelCard = new SeekBarCardView.DSeekBarCard(list);
+            mACLevelCard.setTitle(getString(R.string.charge_level_ac));
+            mACLevelCard.setDescription(getString(R.string.charge_level_ac_summary));
+            mACLevelCard.setProgress(Battery.getChargeLevelControlAC() / 10);
+            mACLevelCard.setOnDSeekBarCardListener(this);
+
+            addView(mACLevelCard);
+        }
+
+        if (Battery.hasChargeLevelControlUSB()) {
+            List<String> list = new ArrayList<>();
+            for (int i = 0; i < 900; i+=10) list.add(String.valueOf(i));
+
+            mUSBLevelCard = new SeekBarCardView.DSeekBarCard(list);
+            mUSBLevelCard.setTitle(getString(R.string.charge_level_usb));
+            mUSBLevelCard.setDescription(getString(R.string.charge_level_usb_summary));
+            mUSBLevelCard.setProgress(Battery.getChargeLevelControlUSB() / 10);
+            mUSBLevelCard.setOnDSeekBarCardListener(this);
+
+            addView(mUSBLevelCard);
+        }
+
     }
 
     private void blxInit() {
@@ -395,6 +431,10 @@ PopupCardView.DPopupCard.OnDPopupCardListener, SwitchCardView.DSwitchCard.OnDSwi
     public void onStop(SeekBarCardView.DSeekBarCard dSeekBarCard, int position) {
         if (dSeekBarCard == mBlxCard)
             Battery.setBlx(position, getActivity());
+        else if (dSeekBarCard == mACLevelCard)
+            Battery.setChargeLevelControlAC(position * 10, getActivity());
+        else if (dSeekBarCard == mUSBLevelCard)
+            Battery.setChargeLevelControlUSB(position * 10, getActivity());
         else if (dSeekBarCard == mChargingRateCard)
             Battery.setChargingRate((position * 10) + 100, getActivity());
         else if (dSeekBarCard == mBclVphLowCard)

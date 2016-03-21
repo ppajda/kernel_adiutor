@@ -1018,6 +1018,9 @@ public interface Constants {
     // Battery
     String FORCE_FAST_CHARGE = "/sys/kernel/fast_charge/force_fast_charge";
     String BLX = "/sys/devices/virtual/misc/batterylifeextender/charging_limit";
+    String CHARGE_LEVEL = "/sys/kernel/charge_levels";
+    String AC_CHARGE_LEVEL = CHARGE_LEVEL + "/charge_level_ac";
+    String USB_CHARGE_LEVEL = CHARGE_LEVEL + "/charge_level_usb";
 
     String CHARGE_RATE = "sys/kernel/thundercharge_control";
     String CHARGE_RATE_ENABLE = CHARGE_RATE + "/enabled";
@@ -1047,6 +1050,7 @@ public interface Constants {
         BCL_VPH_LOW,
         BCL_VPH_HIGH,
         FORCE_FAST_CHARGE,
+	CHARGE_RATE,
         BLX,
         BATTERY_LED,
         BATTERY_LED_PROP,
