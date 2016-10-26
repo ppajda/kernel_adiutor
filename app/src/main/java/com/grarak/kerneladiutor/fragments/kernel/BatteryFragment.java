@@ -55,6 +55,7 @@ PopupCardView.DPopupCard.OnDPopupCardListener, SwitchCardView.DSwitchCard.OnDSwi
     private SeekBarCardView.DSeekBarCard mBlxCard, mACLevelCard, mUSBLevelCard;
 
     private SwitchCardView.DSwitchCard mCustomChargeRateEnableCard;
+    private SeekBarCardView.DSeekBarCard mForceFastChargeCurrentCard;
     private SeekBarCardView.DSeekBarCard mChargingRateCard;
 
     private SwitchCardView.DSwitchCard mC0StateCard, mC1StateCard, mC2StateCard, mC3StateCard;
@@ -149,8 +150,20 @@ PopupCardView.DPopupCard.OnDPopupCardListener, SwitchCardView.DSwitchCard.OnDSwi
         mForceFastChargeCard.setDescription(getString(R.string.usb_fast_charge_summary));
         mForceFastChargeCard.setChecked(Battery.isForceFastChargeActive());
         mForceFastChargeCard.setOnDSwitchCardListener(this);
-
         addView(mForceFastChargeCard);
+
+        if(Battery.hasForceFastChargeCurrent()){
+            List<String> list = new ArrayList<>();
+            for (int i = 0; i < 2200; i+=10) list.add(String.valueOf(i));
+
+            mForceFastChargeCurrentCard = new SeekBarCardView.DSeekBarCard(list);
+            mForceFastChargeCurrentCard.setTitle(getString(R.string.usb_fast_charge_current));
+            mForceFastChargeCurrentCard.setDescription(getString(R.string.usb_fast_charge_current_summary));
+            mForceFastChargeCurrentCard.setProgress(Battery.getFastChargeCurrent() / 10);
+            mForceFastChargeCurrentCard.setOnDSeekBarCardListener(this);
+            addView(mForceFastChargeCurrentCard);
+        }
+
     }
 
     private void chargeLevelControlInit(){
@@ -433,6 +446,8 @@ PopupCardView.DPopupCard.OnDPopupCardListener, SwitchCardView.DSwitchCard.OnDSwi
             Battery.setBlx(position, getActivity());
         else if (dSeekBarCard == mACLevelCard)
             Battery.setChargeLevelControlAC(position * 10, getActivity());
+        else if (dSeekBarCard == mForceFastChargeCurrentCard)
+            Battery.setFastChargeCurrent(position * 10, getActivity());
         else if (dSeekBarCard == mUSBLevelCard)
             Battery.setChargeLevelControlUSB(position * 10, getActivity());
         else if (dSeekBarCard == mChargingRateCard)
