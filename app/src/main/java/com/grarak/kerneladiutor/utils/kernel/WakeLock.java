@@ -244,6 +244,54 @@ public class WakeLock implements Constants {
         return Utils.existFile(NETLINK_WAKELOCK);
     }
 
+    public static void activateIPAWakeLock(boolean active, Context context) {
+        Control.runCommand(active ? "Y" : "N", IPA_WAKELOCK, Control.CommandType.GENERIC, context);
+    }
+
+    public static boolean isIPAWakeLockActive() {
+        return Utils.readFile(IPA_WAKELOCK).equals("Y");
+    }
+
+    public static boolean hasIPAWakeLock() {
+        return Utils.existFile(IPA_WAKELOCK);
+    }
+
+    public static void activateNetMGRWakeLock(boolean active, Context context) {
+        Control.runCommand(active ? "Y" : "N", NETMGR_WAKELOCK, Control.CommandType.GENERIC, context);
+    }
+
+    public static boolean isNetMGRWakeLockActive() {
+        return Utils.readFile(NETMGR_WAKELOCK).equals("Y");
+    }
+
+    public static boolean hasNetMGRWakeLock() {
+        return Utils.existFile(NETMGR_WAKELOCK);
+    }
+
+    public static void activateWlan_extscanWakeLock(boolean active, Context context) {
+        Control.runCommand(active ? "Y" : "N", WLAN_EXTSCAN_WAKELOCK, Control.CommandType.GENERIC, context);
+    }
+
+    public static boolean isWlan_extscanWakeLockActive() {
+        return Utils.readFile(WLAN_EXTSCAN_WAKELOCK).equals("Y");
+    }
+
+    public static boolean hasWlan_extscanWakeLock() {
+        return Utils.existFile(WLAN_EXTSCAN_WAKELOCK);
+    }
+
+    public static void activateWlan_wowWakeLock(boolean active, Context context) {
+        Control.runCommand(active ? "Y" : "N", WLAN_WOW_WAKELOCK, Control.CommandType.GENERIC, context);
+    }
+
+    public static boolean isWlan_wowWakeLockActive() {
+        return Utils.readFile(WLAN_WOW_WAKELOCK).equals("Y");
+    }
+
+    public static boolean hasWlan_wowWakeLock() {
+        return Utils.existFile(WLAN_WOW_WAKELOCK);
+    }
+
     public static void setTestWakeLock(String value, Context context) {
         Control.runCommand(value, TEST_WAKELOCK, Control.CommandType.GENERIC, context);
     }

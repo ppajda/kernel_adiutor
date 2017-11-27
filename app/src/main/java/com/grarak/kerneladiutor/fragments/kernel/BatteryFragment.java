@@ -333,9 +333,9 @@ PopupCardView.DPopupCard.OnDPopupCardListener, SwitchCardView.DSwitchCard.OnDSwi
     public void Update() {
         if (mBatteryLevelCard != null) mBatteryLevelCard.setDescription(Battery.getBatteryLevel() + getString(R.string.percent));
         if (mBatteryChargingCurrentCard != null) {
-            double amperage = (double) Battery.getChargingCurrent() / 1000;
-            if (amperage < 0) mBatteryChargingCurrentCard.setDescription(amperage + getString(R.string.ma));
-            else mBatteryChargingCurrentCard.setDescription("+" + amperage + getString(R.string.ma));
+            double amperage = (double) Battery.getChargingCurrent();
+            if (amperage > 0) mBatteryChargingCurrentCard.setDescription("-" + amperage + getString(R.string.ma));
+            else mBatteryChargingCurrentCard.setDescription("+" + (amperage *= -1) + getString(R.string.ma));
         }
         if (mBatteryVoltageCard != null) {
             double voltage_now = (double) Battery.getBatteryVoltageNow() / 1000;
@@ -346,7 +346,7 @@ PopupCardView.DPopupCard.OnDPopupCardListener, SwitchCardView.DSwitchCard.OnDSwi
             mBatteryTemperature.setDescription(Utils.formatCelsius(celsius) + " " + Utils.celsiusToFahrenheit(celsius));
         }
         if (mBatteryChargingTypeCard != null) {
-            if (Battery.getChargingType().equals("None"))
+            if (Battery.getChargingType().equals("N/A"))
                 mBatteryChargingTypeCard.setDescription(getString(R.string.battery_charging_mode_none));
             else if (Battery.getChargingType().equals("Weak"))
                 mBatteryChargingTypeCard.setDescription(getString(R.string.battery_charging_mode_weak));

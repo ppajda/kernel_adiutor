@@ -621,7 +621,7 @@
     <string name="battery_voltage">Battery Voltage</string>
     <string name="battery_level">Battery Level</string>
     <string name="battery_temperature">Battery Temperature</string>
-    <string name="battery_charging_current">Battery Charging/Discharging Current</string>
+    <string name="battery_charging_current">Battery Current</string>
     <string name="battery_charging_mode">Battery Charging Mode</string>
     <string name="battery_charging_mode_none">Charger not connected</string>
     <string name="battery_charging_mode_weak">Charge current very weak.\nProbably defective charger and/or cable.</string>
@@ -784,6 +784,8 @@
     <string name="dynamic_fsync_summary">When enabled and screen is on, fsync operation is asynchronous. When screen is off, this operation is done synchronously.</string>
     <string name="gentlefairsleepers">Gentle Fair Sleepers</string>
     <string name="gentlefairsleepers_summary">Only give sleepers 50 &#37; of their service deficit. Disabling this can save a little battery power.</string>
+    <string name="archpower">Arch Power</string>
+    <string name="archpower_summary">Enable Arch Specific Power Function/Savings</string>
     <string name="power_suspend_mode">Power Suspend Mode</string>
     <string name="power_suspend_mode_summary">Kernel Mode, LCD Hooks and Highest Level Hook are automatically managed by the kernel. To manually enable or disable the Power Suspend State choose User Mode.</string>
     <string name="state_notifier">State Notifier</string>
@@ -820,6 +822,14 @@
     <string name="timerfd_wakelock_summary">Allow TimerFd wakelock.\n Currently: %s</string>
     <string name="netlink_wakelock">NetLink Wakelock</string>
     <string name="netlink_wakelock_summary">Allow NetLink wakelock.\n Currently: %s</string>
+    <string name="IPA_wakelock">IPA Wakelock</string>
+    <string name="IPA_wakelock_summary">Allow IPA wakelock.\n Currently: %s</string>
+    <string name="NetMGR_wakelock">NetMGR Wakelock</string>
+    <string name="NetMGR_wakelock_summary">Allow NetMGR wakelock.\n Currently: %s</string>
+    <string name="Wlan_extscan_wakelock">Wlan_extscan Wakelock</string>
+    <string name="Wlan_extscan_wakelock_summary">Allow Wlan_extscan wakelock.\n Currently: %s</string>
+    <string name="Wlan_wow_wakelock">Wlan_wow Wakelock</string>
+    <string name="Wlan_wow_wakelock_summary">Allow Wlan_wow wakelock.\n Currently: %s</string>
     <string name="msm_hsic_host_wakelock">msm_hsic_host Wakelock</string>
     <string name="msm_hsic_host_wakelock_summary">Allow msm_hsic_host wakelock.\n Currently: %s</string>
     <string name="wlan_rx_wakelock">wlan_rx Wakelock</string>

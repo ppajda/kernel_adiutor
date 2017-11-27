@@ -61,6 +61,7 @@ public interface Constants {
     String CPU_GOVERNOR_TUNABLES = "/sys/devices/system/cpu/cpufreq";
     String CPU_GOVERNOR_TUNABLES_CORE = "/sys/devices/system/cpu/cpu%d/cpufreq";
 
+    String CPU_MC_POWER_SAVING = "/sys/devices/system/cpu/sched_mc_power_savings";
     String CPU_WQ_POWER_SAVING = "/sys/module/workqueue/parameters/power_efficient";
     String CPU_AVAILABLE_CFS_SCHEDULERS = "/sys/devices/system/cpu/sched_balance_policy/available_sched_balance_policy";
     String CPU_CURRENT_CFS_SCHEDULER = "/sys/devices/system/cpu/sched_balance_policy/current_sched_balance_policy";
@@ -88,6 +89,18 @@ public interface Constants {
     String STATE_NOTFIER_DIFER_TIME = STATE_NOTIFIER + "/suspend_defer_time";
 
     String CPU_TOUCH_BOOST = "/sys/module/msm_performance/parameters/touchboost";
+
+    String CPU_MSM_LIMITER = "/sys/kernel/msm_limiter";
+    String CPU_MSM_LIMITER_ENABLE = "/sys/kernel/msm_limiter/limiter_enabled";
+    String CPU_MSM_LIMITER_ENABLE_NEW = "/sys/kernel/msm_limiter/freq_control";
+    String CPU_MSM_LIMITER_RESUME_MAX = "/sys/kernel/msm_limiter/resume_max_freq";
+    String CPU_MSM_LIMITER_SUSPEND_MIN = "/sys/kernel/msm_limiter/suspend_min_freq";
+    String CPU_MSM_LIMITER_SUSPEND_MAX = "/sys/kernel/msm_limiter/suspend_max_freq";
+    String CPU_MAX_FREQ_PER_CORE = "/sys/kernel/msm_limiter/resume_max_freq_%d";
+    String CPU_MIN_FREQ_PER_CORE = "/sys/kernel/msm_limiter/suspend_min_freq_%d";
+    String CPU_MSM_LIMITER_SCALING_GOVERNOR = "/sys/kernel/msm_limiter/scaling_governor";
+    String CPU_MSM_LIMITER_SCALING_GOVERNOR_PER_CORE = "/sys/kernel/msm_limiter/scaling_governor_%d";
+    String CPU_MSM_LIMITER_VERSION = "/sys/kernel/msm_limiter/msm_limiter_version";
 
     String[] CPU_ARRAY = {
         CPU_CUR_FREQ,
@@ -1045,14 +1058,12 @@ public interface Constants {
         "100",
         "150",
         "200",
-        "259",
         "307",
-        "393",
         "460",
-        "528",
-        "662",
-        "796",
-        "1065"
+        "614",
+        "800",
+        "931",
+        "1006"
     };
 
     String[] RAM_ARRAY = {
@@ -1060,15 +1071,15 @@ public interface Constants {
         RAM_FREQ_MIN,
         RAM_POLL,
         RAM_CUR_FREQ,
-        RAM_CUR_FREQ
+        RAM_AVA_FREQ
     };
 
     // Extra Battery values for quark and maybe other Moto devices
     String BATTERY_PARAMETERS = "/sys/class/power_supply/battery";
     // Battery charging current
-    String BATTERY_CHARGING_CURRENT = BATTERY_PARAMETERS + "/current_avg";
+    String BATTERY_CHARGING_CURRENT = BATTERY_PARAMETERS + "/current_now";
     // Battery charging mode or rate type
-    String BATTERY_CHARGING_TYPE = BATTERY_PARAMETERS + "/charge_rate";
+    String BATTERY_CHARGING_TYPE = BATTERY_PARAMETERS + "/charge_type";
     // Battery health
     String BATTERY_HEALTH = BATTERY_PARAMETERS + "/health";
     String BATTERY_VOLTAGE_NOW = BATTERY_PARAMETERS + "/voltage_now";
@@ -1232,6 +1243,10 @@ public interface Constants {
     String BLUEDROID_TIMER_WAKELOCK = "/sys/module/wakeup/parameters/enable_bluedroid_timer_ws";
 
     String SENSOR_IND_WAKELOCK = "/sys/module/wakeup/parameters/enable_si_ws";
+    String IPA_WAKELOCK = "/sys/module/wakeup/parameters/enable_ipa_ws";
+    String NETMGR_WAKELOCK = "/sys/module/wakeup/parameters/enable_netmgr_wl_ws";
+    String WLAN_EXTSCAN_WAKELOCK = "/sys/module/wakeup/parameters/enable_wlan_extscan_wl_ws";
+    String WLAN_WOW_WAKELOCK = "/sys/module/wakeup/parameters/enable_wlan_wow_wl_ws";
     String MSM_HSIC_HOST_WAKELOCK = "/sys/module/wakeup/parameters/enable_msm_hsic_ws";
 
     String NETLINK_WAKELOCK = "/sys/module/wakeup/parameters/enable_netlink_ws";
@@ -1241,7 +1256,8 @@ public interface Constants {
 
     String[] WLAN_RX_WAKELOCKS = {
         "/sys/module/wakeup/parameters/wlan_rx_wake",
-        "/sys/module/wakeup/parameters/enable_wlan_rx_wake_ws"
+        "/sys/module/wakeup/parameters/enable_wlan_rx_wake_ws",
+        "/sys/module/wakeup/parameters/enable_qcom_rx_wakelock_ws"
     };
 
     String[] WLAN_CTRL_WAKELOCKS = {
@@ -1251,7 +1267,8 @@ public interface Constants {
 
     String[] WLAN_WAKELOCKS = {
         "/sys/module/wakeup/parameters/wlan_wake",
-        "/sys/module/wakeup/parameters/enable_wlan_wake_ws"
+        "/sys/module/wakeup/parameters/enable_wlan_wake_ws",
+        "/sys/module/wakeup/parameters/enable_wlan_ws"
     };
 
     String WLAN_RX_WAKELOCK_DIVIDER = "/sys/module/bcmdhd/parameters/wl_divide";
@@ -1265,6 +1282,10 @@ public interface Constants {
         WLAN_WAKELOCKS,
         {
             SENSOR_IND_WAKELOCK,
+            IPA_WAKELOCK,
+            NETMGR_WAKELOCK,
+            WLAN_EXTSCAN_WAKELOCK,
+            WLAN_WOW_WAKELOCK,
             NETLINK_WAKELOCK,
             TIMERFD_WAKELOCK,
             MSM_HSIC_HOST_WAKELOCK,
@@ -1380,6 +1401,9 @@ public interface Constants {
     // Gentle fair sleepers
     String GENTLE_FAIR_SLEEPERS = "/sys/kernel/sched/gentle_fair_sleepers";
 
+    // Arch power
+    String ARCH_POWER = "/sys/kernel/sched/arch_power";
+
     // Power suspend
     String POWER_SUSPEND = "/sys/kernel/power_suspend";
     String POWER_SUSPEND_MODE = POWER_SUSPEND + "/power_suspend_mode";
@@ -1404,6 +1428,7 @@ public interface Constants {
             LOGGER_ENABLED,
             DYNAMIC_FSYNC,
             GENTLE_FAIR_SLEEPERS,
+            ARCH_POWER,
             POWER_SUSPEND_MODE,
             POWER_SUSPEND_STATE,
             BCL_HOTPLUG,

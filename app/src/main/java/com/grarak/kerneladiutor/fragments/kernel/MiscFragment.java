@@ -53,6 +53,7 @@ public class MiscFragment extends RecyclerViewFragment implements PopupCardView.
     private SwitchCardView.DSwitchCard mMotoTouchxCard;
 
     private SwitchCardView.DSwitchCard mGentleFairSleepersCard;
+    private SwitchCardView.DSwitchCard mArchPowerCard;
 
     private PopupCardView.DPopupCard mPowerSuspendModeCard;
     private SwitchCardView.DSwitchCard mOldPowerSuspendStateCard;
@@ -75,6 +76,7 @@ public class MiscFragment extends RecyclerViewFragment implements PopupCardView.
         fsyncInit();
         if (Misc.hasVibration()) vibrationInit();
         if (Misc.hasGentleFairSleepers()) gentlefairsleepersInit();
+        if (Misc.hasArchPower()) archpowerInit();
         if (Misc.hasPowerSuspend()) powersuspendInit();
         networkInit();
     }
@@ -172,6 +174,16 @@ public class MiscFragment extends RecyclerViewFragment implements PopupCardView.
         mGentleFairSleepersCard.setOnDSwitchCardListener(this);
 
         addView(mGentleFairSleepersCard);
+    }
+
+    private void archpowerInit() {
+         mArchPowerCard = new SwitchCardView.DSwitchCard();
+         mArchPowerCard.setTitle(getString(R.string.archpower));
+         mArchPowerCard.setDescription(getString(R.string.archpower_summary));
+         mArchPowerCard.setChecked(Misc.isArchPowerActive());
+         mArchPowerCard.setOnDSwitchCardListener(this);
+
+         addView(mArchPowerCard);
     }
 
     private void powersuspendInit() {
@@ -313,6 +325,8 @@ public class MiscFragment extends RecyclerViewFragment implements PopupCardView.
             Misc.activateMotoTouchx(checked, getActivity());
         else if (dSwitchCard == mGentleFairSleepersCard)
             Misc.activateGentleFairSleepers(checked, getActivity());
+        else if (dSwitchCard == mArchPowerCard)
+            Misc.activateArchPower(checked, getActivity());
         else if (dSwitchCard == mOldPowerSuspendStateCard)
             if (Misc.getPowerSuspendMode() == 1) {
                 Misc.activateOldPowerSuspend(checked, getActivity());
