@@ -6,7 +6,7 @@ android {
     buildToolsVersion versions.buildTools
 
     defaultConfig {
-        applicationId "com.bhb27.kerneladiutor"
+        applicationId "com.xtd.kerneladiutor"
         minSdkVersion versions.minSdk
         targetSdkVersion versions.compileSdk
         versionCode versions.publishVersionCode

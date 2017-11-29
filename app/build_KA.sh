@@ -17,8 +17,8 @@ echo -e "\n Script start $(date)\n";
 
 #Folders Folder= you app folder SDK_Folder android sdk folder Download it if you don't have it, don't remove the sdk.dir= from the line
 
-FOLDER=/home/bhb27/android/KA27;
-SDK_FOLDER="sdk.dir=/home/bhb27/android/sdk";
+FOLDER=/home/pajdek/KA27;
+SDK_FOLDER="sdk.dir=/home/pajdek/Android";
 #build the app BAPP=1?
 BAPP=1;
 
@@ -27,7 +27,7 @@ BAPP=1;
 
 # Auto sign apk Download from my folder link below extract and set the folder below on yours machine
 # https://www.androidfilehost.com/?fid=312978532265364585
-SIGN_FOLDER=/home/bhb27/android/ZipScriptSign;
+SIGN_FOLDER=/home/pajdek/ZipScriptSign;
 
 # out app folder and out app name
 

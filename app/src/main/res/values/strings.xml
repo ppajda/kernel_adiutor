@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
 
-    <string name="app_name">BHB27 Kernel Adiutor</string>
+    <string name="app_name">XTD Kernel Adiutor</string>
     <string name="root_waiting">Waiting for root access</string>
     <string name="no_root">No root available</string>
     <string name="no_busybox">No busybox available</string>
@@ -155,19 +155,7 @@
     <string name="wakeup_boost_summary">Wakeup Boost is similar to input boost but it occurs when screen is turned on.</string>
     <string name="hotplug_boost">Hotplug Boost</string>
     <string name="hotplug_boost_summary">Hotplug Boost is similar to input boost but it occurs when CPUs go online.</string>
-    <string name="cpu_per_core_freq">Per Core Frequency Control</string>
-    <string name="cpu_per_core_freq_summary">Enable to set individual frequency for it Core.\nDisabling this will set all Cores frequency to Core 0 current Max/Min frequencies.</string>
-    <string name="cpu_per_core_max_freq">Per Core Maximum Frequency</string>
-    <string name="cpu_per_core_min_freq">Per Core Minimum Frequency</string>
-    <string name="cpu_max_per_core_freq">Core %d: Maximum Frequency</string>
-    <string name="cpu_min_per_core_freq">Core %d: Minimum Frequency</string>
     <string name="cpu_min_freq">CPU Minimum Frequency</string>
-    <string name="cpu_per_core_gov_control">Per Core Governor Control</string>
-    <string name="cpu_per_core_gov_control_summary">Enable to set individual governor for it Core.\nDisabling this will set all Cores Governor to Core 0 current Governor setting.</string>
-    <string name="cpu_per_core_gov">Core %d: Governor</string>
-    <string name="cpu_per_core_gov_summary">Choose Governor to Core %d</string>
-    <string name="cpu_per_core_governor_tunables">Core %d Governor Tunables</string>
-    <string name="cpu_per_core_governor_tunables_summary">Click to change the various configuration items which are Governor-dependent for Core %d.</string>
     <string name="cpu_max_freq_pc_summary">Choose maximum frequency that Core %d scale up to.</string>
     <string name="cpu_min_freq_pc_summary">Choose minimum frequency that Core %d scale down to.</string>
     <string name="cpu_set_maxfreq_erro">Unable to set requested Max frequency to core %s, try again.\nIf no success after a few try possible the thermal-driver has set the max frequency lower then the one you are trying.</string>
@@ -679,7 +667,7 @@
     <string name="hidden_app">Hidden Applications</string>
     <string name="content_providers">Content Providers</string>
     <string name="empty_app">Empty Applications</string>
-    <string name="bhb27_recommended">BHB27 Recommended</string>
+    <string name="bhb27_recommended">Recommended</string>
     <string name="moto_default">Moto Default</string>
     <string name="very_light">Very light</string>
     <string name="light">Light</string>
@@ -693,9 +681,9 @@
     <string name="lmk_count">LMK Kill Count</string>
     <string name="lmk_count_summary">Tasked Killed</string>
     <string name="lmk_profiles_original">Profiles (General use)</string>
-    <string name="lmk_bhb_profiles">BHB27 Profiles</string>
+    <string name="lmk_bhb_profiles">XTD Profiles</string>
     <string name="lmk_profiles">LMK Profiles</string>
-    <string name="lmk_profiles_summary">Click on one of the Profile below to set its values to LMK Min Free parameters.\n\nValues will be set according this order:\nA,B,C,D,E,F,G\nWere:\nA = Foreground Applications\nB = Visible Applications\nC = Secondary Server\nD = Hidden Applications\nE = Content Provider\nF = Empty Applications\nG = VM Pressure Min\n\n*G VM Pressure Min, only available in BHB27 Kernel</string>
+    <string name="lmk_profiles_summary">Click on one of the Profile below to set its values to LMK Min Free parameters.\n\nValues will be set according this order:\nA,B,C,D,E,F,G\nWere:\nA = Foreground Applications\nB = Visible Applications\nC = Secondary Server\nD = Hidden Applications\nE = Content Provider\nF = Empty Applications\nG = VM Pressure Min\n\n*G VM Pressure Min, only available in XTD Kernel</string>
 
     <!-- Virtual Memory -->
     <string name="process_reclaim">Process Reclaim</string>
@@ -1034,15 +1022,15 @@
     <string name="open_source">Open source</string>
     <string name="open_source_summary">This application is open source. Check it out on my GitHub!</string>
     <string name="feature_request">Feature request or Bugs</string>
-    <string name="feature_requestb_summary">Do you want more features? or found a bug?\nClick here and mention @baybutcher27 with the request or bug on the XDA thread.</string>
+    <string name="feature_requestb_summary">Do you want more features? or found a bug?\nClick here and mention @ppajdek with the request or bug on the XDA thread.</string>
     <string name="xda_summary">This app is supported via XDA thread check it here</string>
 
-    <string name="modification">Modified for BHB27-Kernel</string>
-    <string name="modification_summary">This application is being heavily modified for the kernel BHB27-Kernel for Quark Motorola (Moto Maxx, Turbo or Droid Turbo). Check it out in the downloads section!</string>
+    <string name="modification">Modified for Lineage eXTenDed Kernel</string>
+    <string name="modification_summary">This application is being heavily modified for the Lineage eXTenDed Kernel for LG G3. Check it out in the downloads section!</string>
 
-    <string name="modification_version">BHB27 Mod Version</string>
+    <string name="modification_version">XTD Mod Version</string>
 
-    <string name="accessibility_service_label">BHB27-Kernel-Adiutor Per App Monitor</string>
+    <string name="accessibility_service_label">XTD-Kernel-Adiutor Per App Monitor</string>
     <string name="accessibility_service_desc">Service to monitor when foreground app changes for per-app profile loading</string>
 
 </resources>

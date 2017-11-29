@@ -2,9 +2,9 @@
 <resources>
     <color name="semi_transparent">#26000000</color>
 
-    <color name="color_primary">#1e2934</color>
-    <color name="color_primary_dark">#12181f</color>
-    <color name="color_primary_light">#4a535c</color>
+    <color name="color_primary">#224960</color>
+    <color name="color_primary_dark">#173343</color>
+    <color name="color_primary_light">#385b6f</color>
 
     <color name="statusbar_color">@color/color_primary_dark</color>
     <color name="actionbar_color">@color/color_primary</color>
@@ -21,7 +21,7 @@
     <color name="profile_list_background">#E6303030</color>
 
     <color name="divider_background_light">#d9d9d9</color>
-    <color name="divider_background_dark">#0c1014</color>
+    <color name="divider_background_dark">#323232</color>
 
     <color name="navigationdrawer_background_light">@color/white</color>
     <color name="navigationdrawer_background_dark">#0c1014</color>
@@ -29,7 +29,7 @@
     <color name="navigationdrawer_selected_background_dark">#26FFFFFF</color>
 
     <color name="card_background_light">#FAFAFA</color>
-    <color name="card_background_dark">#330000</color>
+    <color name="card_background_dark">#202020</color>
 
     <color name="textcolor_light">#182029</color>
     <color name="textcolor_dark">@color/white</color>

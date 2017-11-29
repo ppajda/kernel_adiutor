@@ -581,18 +581,6 @@ public class CPU implements Constants {
         return Utils.existFile(STATE_NOTFIER_DIFER_TIME);
     }
 
-    public static void activateStateDebug(boolean active, Context context) {
-        Control.runCommand(active ? "1" : "0", STATE_NOTIFIER_DEBUG, Control.CommandType.GENERIC, context);
-    }
-
-    public static boolean isStateDebugActive() {
-        return Utils.readFile(STATE_NOTIFIER_DEBUG).equals("1");
-    }
-
-    public static boolean hasStateDebug() {
-        return Utils.existFile(STATE_NOTIFIER_DEBUG);
-    }
-
     public static boolean isCoreOnline(int core) {
         return Utils.readFile(String.format(Locale.US, CPU_CORE_ONLINE, core)).equals("1");
     }
@@ -628,22 +616,6 @@ public class CPU implements Constants {
 
     }
 
-    public static boolean isPerCoreFreqControlEnabled(Context context) {
-        try {
-            return Utils.getBoolean("Per_Core_Freq_Control_Enabled", false, context);
-        } catch (NullPointerException err) {
-            return false;
-        }
-    }
-
-    public static void setPerCoreFreqControlEnabled(boolean active, Context context) {
-        Utils.saveBoolean("Per_Core_Freq_Control_Enabled", active, context);
-        //If deactivate reset freq to core 0 freq
-        if (!active) {
-            setMinFreq(getMinFreq(0, false), context);
-            setMaxFreq(getMaxFreq(0, false), context);
-        }
-    }
     //Rewrite already existent code because of delay using existent function cause command to start before the previously had not finished
     // some times the freq is not set in the first try or never get set because thermal driver has set Max freq lower then the requested
     public static boolean setPCMaxFreq(int freq, int core, Context context) {
@@ -672,22 +644,6 @@ public class CPU implements Constants {
                 return true;
         }
         return false;
-    }
-
-    public static boolean isPerCoreGovControlEnabled(Context context) {
-        try {
-            return Utils.getBoolean("Per_Core_Gov_Control_Enabled", false, context);
-        } catch (NullPointerException err) {
-            return false;
-        }
-    }
-
-    public static void setPerCoreGovControlEnabled(boolean active, Context context) {
-        Utils.saveBoolean("Per_Core_Gov_Control_Enabled", active, context);
-        //If deactivate reset gov to core 0 freq
-        if (!active) {
-            setGovernor(getCurGovernor(0, false), context);
-        }
     }
 
     public static boolean setGovernorPC(String governor, int core, Context context) {

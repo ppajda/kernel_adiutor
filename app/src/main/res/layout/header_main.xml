@@ -6,7 +6,7 @@
     android:layout_height="@dimen/headermain_height"
     android:clickable="true"
     android:focusable="true"
-    android:foreground="?attr/selectableItemBackground" 
+    android:foreground="?attr/selectableItemBackground"
     android:background="@drawable/header_background">
 
     <ImageView
