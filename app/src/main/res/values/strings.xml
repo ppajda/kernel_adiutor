@@ -156,8 +156,6 @@
     <string name="hotplug_boost">Hotplug Boost</string>
     <string name="hotplug_boost_summary">Hotplug Boost is similar to input boost but it occurs when CPUs go online.</string>
     <string name="cpu_min_freq">CPU Minimum Frequency</string>
-    <string name="cpu_max_freq_pc_summary">Choose maximum frequency that Core %d scale up to.</string>
-    <string name="cpu_min_freq_pc_summary">Choose minimum frequency that Core %d scale down to.</string>
     <string name="cpu_set_maxfreq_erro">Unable to set requested Max frequency to core %s, try again.\nIf no success after a few try possible the thermal-driver has set the max frequency lower then the one you are trying.</string>
     <string name="cpu_set_minfreq_erro">Unable to set requested Min frequency to core %s, try again.</string>
     <string name="cpu_set_minfreq_erro_min_max">Unable to set requested Min frequency to core %d, requested frequency equal or biger them current Max frequency for this core.</string>

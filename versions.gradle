@@ -3,14 +3,14 @@ ext.versions = [
         compileSdk           : 27,
         buildTools           : '27.0.1',
 
-        publishVersion       : 'XTD.01',
-        publishVersionCode   : 1,
+        publishVersion       : 'XTD.02',
+        publishVersionCode   : 2,
 
         gradlePlugin         : '3.1.0-alpha04',
         benmanes             : '0.17.0',
 
         picasso              : '2.5.2',
-        supportLib           : '27.0.1',
+        supportLib           : '27.0.2',
         ztzip                : '1.12',
         materialdialogs      : '0.9.6.0',
         materialtabs         : '2.0.5',

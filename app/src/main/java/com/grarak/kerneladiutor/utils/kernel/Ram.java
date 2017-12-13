@@ -103,13 +103,16 @@ public class Ram implements Constants {
     }
 
     public static List < String > devFreqs() {
-        return new ArrayList < > (Arrays.asList(RAM_APQ8084_AVA_FREQ));
+        return new ArrayList < > (Arrays.asList(RAM_G3_AVA_FREQ));
     }
 
-    public static boolean device(String device, String board) {
+    public static boolean device(String device, String device2, String device3, String device4, String device5, String device6, String device7) {
         return ((RootUtils.runCommand("getprop ro.product.device").contains(device)) ||
-            (RootUtils.runCommand("getprop ro.product.name").contains(board)) ||
-            (RootUtils.runCommand("getprop ro.board.plataform").contains(board)) ||
-            (RootUtils.runCommand("getprop ro.product.board").contains(board)));
+            (RootUtils.runCommand("getprop ro.product.device").contains(device2)) ||
+            (RootUtils.runCommand("getprop ro.product.device").contains(device3)) ||
+            (RootUtils.runCommand("getprop ro.product.device").contains(device4)) ||
+            (RootUtils.runCommand("getprop ro.product.device").contains(device5)) ||
+            (RootUtils.runCommand("getprop ro.product.device").contains(device6)) ||
+            (RootUtils.runCommand("getprop ro.product.device").contains(device7)));
     }
 }

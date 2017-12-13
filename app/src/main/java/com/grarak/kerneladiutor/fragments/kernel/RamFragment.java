@@ -58,7 +58,7 @@ public class RamFragment extends RecyclerViewFragment implements PopupCardView.D
         mTotalRAM = (int)(mMemoryInfo.totalMem / mMemoryDivider);
 
         freqs = Ram.getFreqs();
-        if (Ram.device("d855", "msm8974")) {
+        if (Ram.device("d850", "d851", "d852", "d855", "f400", "ls990", "vs985")) {
             freqs_dev = new ArrayList < > ();
             for (String freq: Ram.devFreqs())
                 freqs_dev.add(freq + getString(R.string.mhz));

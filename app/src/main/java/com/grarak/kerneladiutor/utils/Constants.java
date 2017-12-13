@@ -1053,7 +1053,7 @@ public interface Constants {
     String RAM_CUR_FREQ = "/sys/devices/qcom,cpubw.*/devfreq/qcom,cpubw.*/cur_freq";
     String RAM_AVA_FREQ = "/sys/devices/qcom,cpubw.*/devfreq/qcom,cpubw.*/available_frequencies";
 
-    String[] RAM_APQ8084_AVA_FREQ = {
+    String[] RAM_G3_AVA_FREQ = {
         "50",
         "75",
         "100",
