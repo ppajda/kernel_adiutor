@@ -3,10 +3,10 @@ ext.versions = [
         compileSdk           : 27,
         buildTools           : '27.0.1',
 
-        publishVersion       : 'XTD.02',
-        publishVersionCode   : 2,
+        publishVersion       : 'XTD.03',
+        publishVersionCode   : 3,
 
-        gradlePlugin         : '3.1.0-alpha04',
+        gradlePlugin         : '3.1.0-alpha05',
         benmanes             : '0.17.0',
 
         picasso              : '2.5.2',

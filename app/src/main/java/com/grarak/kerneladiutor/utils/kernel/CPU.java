@@ -52,6 +52,42 @@ public class CPU implements Constants {
 
     private static String CPU_BOOST_ENABLE_FILE;
 
+    private static String mMSMLimiterEnable;
+
+    private static String getMSMLimiterTokenValueByCore (int core, String newvalue, String existing) {
+        String newstring = "";
+        if (core == -1) {
+            for (int i = 0; i < CPU.cores;i++) {
+                if (i == 0) {
+                    newstring = i + ":" + newvalue + " ";
+                }
+                else {
+                    newstring = newstring + i + ":" + newvalue + " ";
+                }
+            }
+        } else if (core >= 0) {
+            String[] parts = existing.split(" ");
+            parts[core] = core + ":" + newvalue;
+            for (int i = 0; i < parts.length; i++) {
+                newstring = newstring + parts[i] + " ";
+            }
+        }
+        if (newstring.endsWith(" ")) {
+            newstring = newstring.substring(0, newstring.length() -1);
+        }
+        return newstring;
+    }
+
+    private static String getMSMLimiterToken (int core, String value) {
+        String tokens[] = value.split(" ");
+        if (core == -1) {
+            return tokens[0].replace(0 + ":","");
+        } else if (core >= 0) {
+            return tokens[core].replace(core + ":","");
+        }
+        return "";
+    }
+
     public static void activateCpuTouchBoost(boolean active, Context context) {
         Control.runCommand(active ? "1" : "0", CPU_TOUCH_BOOST, Control.CommandType.GENERIC, context);
     }
@@ -189,6 +225,51 @@ public class CPU implements Constants {
         return Utils.existFile(CPU_BOOST);
     }
 
+    public static boolean hasMSM_Limiter() {
+        if (Utils.existFile(CPU_MSM_LIMITER_ENABLE)) {
+            mMSMLimiterEnable = CPU_MSM_LIMITER_ENABLE;
+            return true;
+        }
+        else if (Utils.existFile(CPU_MSM_LIMITER_ENABLE_NEW)) {
+            mMSMLimiterEnable = CPU_MSM_LIMITER_ENABLE_NEW;
+            return true;
+        }
+        return false;
+    }
+
+    public static void activateMSM_Limiter(boolean active, Context context) {
+        if (active) {
+            for (int i = 0; i < CPU.getCoreCount(); i++) {
+                Control.deletespecificcommand(context, String.format(Locale.US, CPU_SCALING_GOVERNOR, i), null);
+                Control.deletespecificcommand(context, String.format(Locale.US, CPU_SCALING_GOVERNOR, i) + "permission644", null);
+                Control.deletespecificcommand(context, String.format(Locale.US, CPU_SCALING_GOVERNOR, i) + "permission444", null);
+            }
+            CPU.setMSMLimiterGovernor(CPU.getCurGovernor(true), context, -1);
+        }
+        else {
+            Control.deletespecificcommand(context, CPU_MSM_LIMITER_SCALING_GOVERNOR, null);
+            CPU.setGovernor(CPU.getMSMLimiterGovernor(-1), context);
+        }
+        Control.runCommand(active ? "1" : "0", mMSMLimiterEnable, Control.CommandType.GENERIC, context);
+    }
+
+    public static boolean isMSM_LimiterActive() {
+        if (Utils.existFile(mMSMLimiterEnable)) {
+            return Utils.readFile(mMSMLimiterEnable).equals("1");
+        }
+        else {
+            return false;
+        }
+    }
+
+    public static boolean hasMSM_Limiter_Version () {
+        return Utils.existFile(CPU_MSM_LIMITER_VERSION);
+    }
+
+    public static Double getMSM_Limiter_Version () {
+        return Utils.stringtodouble(Utils.readFile(CPU_MSM_LIMITER_VERSION).replace("version: ",""));
+    }
+
     public static void setCpuQuietGovernor(String value, Context context) {
         Control.runCommand(value, CPU_QUIET_CURRENT_GOVERNOR, Control.CommandType.GENERIC, context);
     }
@@ -228,6 +309,151 @@ public class CPU implements Constants {
 
     public static boolean hasCpuQuiet() {
         return Utils.existFile(CPU_QUIET);
+    }
+
+    public static boolean hasMSM_LimiterResumeMaxFreq() {
+        return Utils.existFile(CPU_MSM_LIMITER_RESUME_MAX);
+    }
+
+    public static int getMSM_LimiterResumeMaxFreq (int core) {
+        if (getMSM_Limiter_Version() < 5.2 ) {
+            if (core == -1) {
+                if (Utils.existFile(CPU_MSM_LIMITER_RESUME_MAX)) {
+                    String value = Utils.readFile(CPU_MSM_LIMITER_RESUME_MAX);
+                    if (value != null) return Utils.stringToInt(value);
+                }
+            } else if (core >= 0) {
+                if (Utils.existFile(String.format(CPU_MAX_FREQ_PER_CORE, core))) {
+                    String value = Utils.readFile(String.format(CPU_MAX_FREQ_PER_CORE, core));
+                    if (value != null) return Utils.stringToInt(value);
+                }
+            }
+        }
+        else if (getMSM_Limiter_Version() > 5.1 ) {
+            if (core == -1) {
+                return Utils.stringToInt(getMSMLimiterToken(0, Utils.readFile(CPU_MSM_LIMITER_RESUME_MAX)));
+            }
+            if (core >= 0) {
+                return Utils.stringToInt(getMSMLimiterToken(core, Utils.readFile(CPU_MSM_LIMITER_RESUME_MAX)));
+            }
+        }
+        return 0;
+    }
+
+    public static void setMSM_LimiterResumeMaxFreq(int freq, Context context, int core) {
+        if (getMSM_Limiter_Version() < 5.2) {
+            if (core == -1) {
+                Control.runCommand(String.valueOf(freq), CPU_MSM_LIMITER_RESUME_MAX, Control.CommandType.GENERIC, context);
+            } else if (core >= 0) {
+                String path = String.format(CPU_MAX_FREQ_PER_CORE, core);
+                if (Utils.existFile(path))
+                    Control.runCommand(Integer.toString(freq), path, Control.CommandType.GENERIC, context);
+            }
+        }
+        else if (getMSM_Limiter_Version() > 5.1) {
+            if (core == -1) {
+                Control.runCommand(getMSMLimiterTokenValueByCore(-1,String.valueOf(freq),""), CPU_MSM_LIMITER_RESUME_MAX, Control.CommandType.GENERIC, context);
+            }
+            else if (core >= 0) {
+                Control.runCommand(getMSMLimiterTokenValueByCore(core,String.valueOf(freq),Utils.readFile(CPU_MSM_LIMITER_RESUME_MAX)), CPU_MSM_LIMITER_RESUME_MAX, Control.CommandType.GENERIC, context);
+            }
+        }
+    }
+
+    public static boolean hasMSM_LimiterSuspendMaxFreq() {
+            return Utils.existFile(CPU_MSM_LIMITER_SUSPEND_MAX);
+    }
+
+    public static int getMSM_LimiterSuspendMaxFreq (int core) {
+        if (getMSM_Limiter_Version() < 5.2 ) {
+            if (core == -1) {
+                if (Utils.existFile(CPU_MSM_LIMITER_SUSPEND_MAX)) {
+                    String value = Utils.readFile(CPU_MSM_LIMITER_SUSPEND_MAX);
+                    if (value != null) return Utils.stringToInt(value);
+                }
+            }
+            else if (core >= 0) {
+                if (Utils.existFile(String.format(CPU_MIN_FREQ_PER_CORE, core))) {
+                    String value = Utils.readFile(String.format(CPU_MIN_FREQ_PER_CORE, core));
+                    if (value != null) return Utils.stringToInt(value);
+                }
+            }
+        }
+        else if (getMSM_Limiter_Version() > 5.1 ) {
+            if (core == -1) {
+                return Utils.stringToInt(getMSMLimiterToken(0, Utils.readFile(CPU_MSM_LIMITER_SUSPEND_MAX)));
+            }
+            if (core >= 0) {
+                return Utils.stringToInt(getMSMLimiterToken(core, Utils.readFile(CPU_MSM_LIMITER_SUSPEND_MAX)));
+            }
+        }
+        return 0;
+    }
+
+    public static void setMSM_LimiterSuspendMaxFreq(int freq, int core, Context context) {
+        if (getMSM_Limiter_Version() < 5.2) {
+            if (core == -1) {
+                Control.runCommand(String.valueOf(freq), CPU_MSM_LIMITER_SUSPEND_MAX, Control.CommandType.GENERIC, context);
+            }
+        }
+        else if (getMSM_Limiter_Version() > 5.1) {
+            if (core == -1) {
+                Control.runCommand(getMSMLimiterTokenValueByCore(-1,String.valueOf(freq),""), CPU_MSM_LIMITER_SUSPEND_MAX, Control.CommandType.GENERIC, context);
+            }
+            else if (core >= 0) {
+                Control.runCommand(getMSMLimiterTokenValueByCore(core,String.valueOf(freq),Utils.readFile(CPU_MSM_LIMITER_SUSPEND_MAX)), CPU_MSM_LIMITER_SUSPEND_MAX, Control.CommandType.GENERIC, context);
+            }
+        }
+    }
+
+    public static boolean hasMSM_LimiterSuspendMinFreq() {
+        return Utils.existFile(CPU_MSM_LIMITER_SUSPEND_MIN);
+    }
+
+    public static int getMSM_LimiterSuspendMinFreq (int core) {
+        if (getMSM_Limiter_Version() < 5.2 ) {
+            if (core == -1) {
+                if (Utils.existFile(CPU_MSM_LIMITER_SUSPEND_MIN)) {
+                    String value = Utils.readFile(CPU_MSM_LIMITER_SUSPEND_MIN);
+                    if (value != null) return Utils.stringToInt(value);
+                }
+            }
+            else if (core >= 0) {
+                if (Utils.existFile(String.format(CPU_MIN_FREQ_PER_CORE, core))) {
+                    String value = Utils.readFile(String.format(CPU_MIN_FREQ_PER_CORE, core));
+                    if (value != null) return Utils.stringToInt(value);
+                }
+            }
+        }
+        else if (getMSM_Limiter_Version() > 5.1 ) {
+            if (core == -1) {
+                return Utils.stringToInt(getMSMLimiterToken(0, Utils.readFile(CPU_MSM_LIMITER_SUSPEND_MIN)));
+            }
+            if (core >= 0) {
+                return Utils.stringToInt(getMSMLimiterToken(core, Utils.readFile(CPU_MSM_LIMITER_SUSPEND_MIN)));
+            }
+        }
+        return 0;
+    }
+
+    public static void setMSM_LimiterSuspendMinFreq(int freq, int core, Context context) {
+        if (getMSM_Limiter_Version() < 5.2 ) {
+            if (core == -1) {
+                Control.runCommand(String.valueOf(freq), CPU_MSM_LIMITER_SUSPEND_MIN, Control.CommandType.GENERIC, context);
+            }
+            else if (core > 0 ) {
+                String path = String.format(CPU_MIN_FREQ_PER_CORE, core);
+                if (Utils.existFile(path)) Control.runCommand(Integer.toString(freq), path, Control.CommandType.GENERIC, context);
+            }
+        }
+        else if (getMSM_Limiter_Version() > 5.1 ) {
+            if (core == -1) {
+                Control.runCommand(getMSMLimiterTokenValueByCore(-1,String.valueOf(freq),""), CPU_MSM_LIMITER_SUSPEND_MIN, Control.CommandType.GENERIC, context);
+            }
+            else if (core >= 0) {
+                Control.runCommand(getMSMLimiterTokenValueByCore(core,String.valueOf(freq),Utils.readFile(CPU_MSM_LIMITER_SUSPEND_MIN)), CPU_MSM_LIMITER_SUSPEND_MIN, Control.CommandType.GENERIC, context);
+            }
+        }
     }
 
     public static void setCFSScheduler(String value, Context context) {
@@ -297,13 +523,56 @@ public class CPU implements Constants {
         return new ArrayList < > (Arrays.asList(mAvailableGovernors[core]));
     }
 
-    public static void setGovernor(String governor, Context context) {
-        for (int i = 0; i < getCoreCount(); i++)
-            setGovernorPC(governor, i, context);
+    public static boolean isPerCoreControlActive (Context context) {
+        return Utils.getBoolean("MSM_Limiter_Per_Core_Control", false, context);
     }
 
-    public static void setGovernorBig(Control.CommandType command, String governor, Context context) {
+    public static boolean hasPerCoreControl () {
+        return hasMSM_Limiter();
+    }
+
+
+    public static void activatePerCoreControl(boolean active, Context context) {
+        Utils.saveBoolean("MSM_Limiter_Per_Core_Control", active, context);
+        if (active) {
+            Control.deletespecificcommand(context, CPU_MSM_LIMITER_SCALING_GOVERNOR, null);
+            for (int i = 0; i < CPU.getCoreCount(); i++) {
+                CPU.setMSMLimiterGovernor(CPU.getMSMLimiterGovernor(-1), context, i);
+            }
+        }
+        else {
+            for (int i = 0; i < CPU.getCoreCount(); i++) {
+                Control.deletespecificcommand(context, String.format(CPU_MSM_LIMITER_SCALING_GOVERNOR_PER_CORE, i), null);
+            }
+            CPU.setMSMLimiterGovernor(CPU.getMSMLimiterGovernor(0), context, -1);
+        }
+    }
+
+    public static void setGovernor(String governor, Context context) {
+        setGovernor(Control.CommandType.CPU, governor, context);
+    }
+
+    public static void setGovernor(Control.CommandType command, String governor, Context context) {
         Control.runCommand(governor, CPU_SCALING_GOVERNOR, command, context);
+    }
+
+    public static void setMSMLimiterGovernor(String governor, Context context, int core) {
+        if (getMSM_Limiter_Version() < 5.2) {
+            if ( core == -1) {
+                Control.runCommand(governor, CPU_MSM_LIMITER_SCALING_GOVERNOR, Control.CommandType.GENERIC, context);
+            } else if ( core >= 0) {
+                Control.runCommand(governor, String.format(CPU_MSM_LIMITER_SCALING_GOVERNOR_PER_CORE, core), Control.CommandType.GENERIC, context);
+            }
+        }
+        else if (getMSM_Limiter_Version() > 5.1) {
+            String newgov = "";
+            if (core == -1) {
+               newgov = CPU.getMSMLimiterTokenValueByCore(-1, governor, "");
+            } else if (core >= 0) {
+                newgov = CPU.getMSMLimiterTokenValueByCore(core, governor, Utils.readFile(CPU_MSM_LIMITER_SCALING_GOVERNOR));
+            }
+            Control.runCommand(newgov, CPU_MSM_LIMITER_SCALING_GOVERNOR, Control.CommandType.GENERIC, context);
+        }
     }
 
     public static String getCurGovernor(boolean forceRead) {
@@ -312,20 +581,45 @@ public class CPU implements Constants {
 
     public static String getCurGovernor(int core, boolean forceRead) {
         if (forceRead && core > 0)
-            while (!Utils.existFile(String.format(Locale.US, CPU_SCALING_GOVERNOR, core)))
-                RootUtils.runCommand("echo " + "1" + " > " + String.format(Locale.US, Constants.CPU_CORE_ONLINE, core));
-        if (Utils.existFile(String.format(Locale.US, CPU_SCALING_GOVERNOR, core))) {
-            String value = Utils.readFile(String.format(Locale.US, CPU_SCALING_GOVERNOR, core));
+            while (!Utils.existFile(String.format(CPU_SCALING_GOVERNOR, core)))
+                activateCore(core, true, null);
+        if (Utils.existFile(String.format(CPU_SCALING_GOVERNOR, core))) {
+            String value = Utils.readFile(String.format(CPU_SCALING_GOVERNOR, core));
             if (value != null) return value;
         }
         return "";
     }
 
-    public static List < Integer > getFreqs() {
+    public static String getMSMLimiterGovernor (int core) {
+        if (Utils.existFile(CPU_MSM_LIMITER_SCALING_GOVERNOR)) {
+            String value = Utils.readFile(CPU_MSM_LIMITER_SCALING_GOVERNOR);
+            if (getMSM_Limiter_Version() < 5.2) {
+                if (core == -1){
+                    if (value != null) {
+                        return value;
+                    }
+                } else if ( core >= 0) {
+                    if (Utils.existFile(String.format(CPU_MSM_LIMITER_SCALING_GOVERNOR_PER_CORE, core))) {
+                        value = Utils.readFile(String.format(CPU_MSM_LIMITER_SCALING_GOVERNOR_PER_CORE, core));
+                        if (value != null) return value;
+                    }
+                }
+            } else if (getMSM_Limiter_Version() > 5.1) {
+                if (core == -1) {
+                    return getMSMLimiterToken(0, value);
+                } else if (core >= 0) {
+                    return getMSMLimiterToken(core, value);
+                }
+            }
+        }
+        return "";
+    }
+
+    public static List<Integer> getFreqs() {
         return getFreqs(getBigCore());
     }
 
-    public static List < Integer > getFreqs(int core) {
+    public static List<Integer> getFreqs(int core) {
         if (mFreqs == null) mFreqs = new Integer[getCoreCount()][];
         if (mFreqs[core] == null) {
             if (Utils.existFile(Utils.getsysfspath(CPU_TIME_IN_STATE_ARRAY, core)) || Utils.existFile(Utils.getsysfspath(CPU_TIME_IN_STATE_ARRAY, 0))) {
@@ -345,13 +639,13 @@ public class CPU implements Constants {
                     for (int i = 0; i < mFreqs[core].length; i++)
                         mFreqs[core][i] = Utils.stringToInt(valueArray[i].split(" ")[0]);
                 }
-            } else if (Utils.existFile(String.format(Locale.US, CPU_AVAILABLE_FREQS, 0))) {
+            } else if (Utils.existFile(String.format(CPU_AVAILABLE_FREQS, 0))) {
                 if (core > 0) {
-                    while (!Utils.existFile(String.format(Locale.US, CPU_AVAILABLE_FREQS, core)))
+                    while (!Utils.existFile(String.format(CPU_AVAILABLE_FREQS, core)))
                         activateCore(core, true, null);
                 }
                 String values;
-                if ((values = Utils.readFile(String.format(Locale.US, CPU_AVAILABLE_FREQS, core))) != null) {
+                if ((values = Utils.readFile(String.format(CPU_AVAILABLE_FREQS, core))) != null) {
                     String[] valueArray = values.split(" ");
                     mFreqs[core] = new Integer[valueArray.length];
                     for (int i = 0; i < mFreqs[core].length; i++)
@@ -362,7 +656,7 @@ public class CPU implements Constants {
         if (mFreqs[core] == null) {
             return Collections.emptyList();
         }
-        List < Integer > freqs = Arrays.asList(mFreqs[core]);
+        List<Integer> freqs = Arrays.asList(mFreqs[core]);
         Collections.sort(freqs);
         return freqs;
     }

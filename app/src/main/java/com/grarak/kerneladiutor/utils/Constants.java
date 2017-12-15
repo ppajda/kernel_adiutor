@@ -38,6 +38,8 @@ public interface Constants {
     String PROC_VERSION = "/proc/version";
     String PROC_CPUINFO = "/proc/cpuinfo";
     String PROC_MEMINFO = "/proc/meminfo";
+    String PVS_LEVEL = "/sys/module/clock_krait_8974/parameters/pvs_level";
+    String SPEED_LEVEL = "/sys/module/clock_krait_8974/parameters/speed_level";
 
     // CPU
     String CPU_CUR_FREQ = "/sys/devices/system/cpu/cpu%d/cpufreq/scaling_cur_freq";
@@ -125,6 +127,15 @@ public interface Constants {
         CPU_QUIET,
         CPU_BOOST,
         CPU_TOUCH_BOOST,
+	CPU_MSM_LIMITER_ENABLE,
+	CPU_MSM_LIMITER_ENABLE_NEW,
+	CPU_MSM_LIMITER_RESUME_MAX,
+	CPU_MSM_LIMITER_SUSPEND_MIN,
+	CPU_MSM_LIMITER_SUSPEND_MAX,
+	CPU_MSM_LIMITER_SCALING_GOVERNOR,
+	CPU_MSM_LIMITER_SCALING_GOVERNOR_PER_CORE,
+	CPU_MIN_FREQ_PER_CORE,
+	CPU_MAX_FREQ_PER_CORE,
         STATE_NOTIFIER
     };
 
