@@ -356,6 +356,8 @@
   <string name="master_sequence_summary">Activando la secuencia principal desactivará e ignorará los perfiles y escenarios de Samsung, los controles de la ROM serán desactivados.</string>
   <string name="glove_mode">Modo de Guantes</string>
   <string name="glove_mode_summary">Habilitando esto le permitirá usar el teléfono aunque esté con guantes.</string>
+  <string name="sharpening">Afilado</string>
+  <string name="sharpening_summary">Habilitar Afilado de la pantalla</string>
   <string name="dt2w">DoubleTap2Wake</string>
   <string name="dt2w_summary">Enciende la pantalla pulsando dos veces la pantalla.</string>
   <string name="s2w">Sweep2Wake</string>

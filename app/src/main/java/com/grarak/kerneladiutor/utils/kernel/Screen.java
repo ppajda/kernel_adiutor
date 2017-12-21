@@ -49,6 +49,10 @@ public class Screen implements Constants {
         return Utils.existFile(GLOVE_MODE);
     }
 
+    private static String SHARPENING_FILE;
+
+    public static String CRC_FILE;
+
     public static void activateMasterSequence(boolean active, Context context) {
         Control.runCommand(active ? "1" : "0", MASTER_SEQUENCE, Control.CommandType.GENERIC, context);
     }
@@ -536,6 +540,23 @@ public class Screen implements Constants {
 
     public static void activateGrayscaleMode(boolean active, Context context) {
         Control.runCommand(active ? "128" : "255", SCREEN_KCAL_CTRL_SAT, Control.CommandType.GENERIC, context);
+    }
+
+    public static void  activateSharpening(boolean active, Context context) {
+        Control.runCommand(active ? "1" : "0", SHARPENING_FILE, Control.CommandType.GENERIC, context);
+    }
+
+    public static boolean isSharpeningActive() {
+        return Utils.readFile(SHARPENING_FILE).equals("1");
+    }
+
+    public static boolean hasSharpeningEnable() {
+        if (SHARPENING_FILE == null) for (String file : SHARPENING_ARRAY)
+            if (Utils.existFile(file)) {
+                SHARPENING_FILE = file;
+                return true;
+            }
+        return SHARPENING_FILE != null;
     }
 
     public static void setSaturationIntensity(int value, Context context) {

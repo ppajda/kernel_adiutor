@@ -1403,11 +1403,18 @@ public interface Constants {
         "/sys/module/mmc_core/parameters/use_spi_crc"
     };
 
+    // Sharpening
+    String[] SHARPENING_ARRAY = {
+            "/sys/devices/virtual/graphics/fb0/sharpening",
+            "/sys/devices/virtual/graphics/fb1/sharpening"
+    };
+
     // Fsync
     String[] FSYNC_ARRAY = {
         "/sys/devices/virtual/misc/fsynccontrol/fsync_enabled",
         "/sys/module/sync/parameters/fsync_enabled"
     };
+
     String DYNAMIC_FSYNC = "/sys/kernel/dyn_fsync/Dyn_fsync_active";
 
     // Gentle fair sleepers

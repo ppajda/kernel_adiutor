@@ -100,6 +100,8 @@ public class ScreenFragment extends RecyclerViewFragment implements SeekBarCardV
     private SeekBarCardView.DSeekBarCard mLcdMinBrightnessCard;
     private SeekBarCardView.DSeekBarCard mLcdMaxBrightnessCard;
 
+    private SwitchCardView.DSwitchCard mSharpeningCard;
+
     private SwitchCardView.DSwitchCard mBackLightDimmerEnableCard;
     private SeekBarCardView.DSeekBarCard mBackLightDimmerMinBrightnessCard;
     private SeekBarCardView.DSeekBarCard mBackLightDimmerThresholdCard;
@@ -136,6 +138,7 @@ public class ScreenFragment extends RecyclerViewFragment implements SeekBarCardV
         if (Screen.hasNegativeToggle()) negativeToggleInit();
         mdnieGlobalInit();
         if (Screen.hasGloveMode()) gloveModeInit();
+        if (Screen.hasSharpeningEnable()) sharpeningInit();
     }
 
     @Override
@@ -727,6 +730,16 @@ public class ScreenFragment extends RecyclerViewFragment implements SeekBarCardV
         addView(mGloveModeCard);
     }
 
+    private void sharpeningInit() {
+            mSharpeningCard = new SwitchCardView.DSwitchCard();
+            mSharpeningCard.setTitle(getString(R.string.sharpening));
+            mSharpeningCard.setDescription(getString(R.string.sharpening_summary));
+            mSharpeningCard.setChecked(Screen.isSharpeningActive());
+            mSharpeningCard.setOnDSwitchCardListener(this);
+
+            addView(mSharpeningCard);
+        }
+
     @Override
     public void onChanged(SeekBarCardView.DSeekBarCard dSeekBarCard, int position) {
         if (dSeekBarCard == mColorCalibrationMinCard) {
@@ -813,6 +826,8 @@ public class ScreenFragment extends RecyclerViewFragment implements SeekBarCardV
             Screen.activateMasterSequence(checked, getActivity());
         else if (dSwitchCard == mGloveModeCard)
             Screen.activateGloveMode(checked, getActivity());
+        else if (dSwitchCard == mSharpeningCard)
+            Screen.activateSharpening(checked, getActivity());
     }
 
     @Override
@@ -1102,5 +1117,4 @@ public class ScreenFragment extends RecyclerViewFragment implements SeekBarCardV
         mDsiPanelWhitePointCard.setDescription(whitePoint);
         mDsiPanelWhitePointCard.setValue(whitePoint);
     }
-
 }
