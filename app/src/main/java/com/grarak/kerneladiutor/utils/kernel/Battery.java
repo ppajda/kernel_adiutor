@@ -78,8 +78,27 @@ public class Battery implements Constants {
         return Utils.existFile(BLX);
     }
 
+    private static String FASTCHARGEMTP_FILE;
+
     public static void activateForceFastCharge(boolean active, Context context) {
-        Control.runCommand(active ? "1" : "0", FORCE_FAST_CHARGE, Control.CommandType.GENERIC, context);
+        Control.runCommand(active ? "2" : "0", FORCE_FAST_CHARGE, Control.CommandType.GENERIC, context);
+    }
+
+    public static void  activateFastChargeMtp(boolean active, Context context) {
+        Control.runCommand(active ? "1" : "0", FASTCHARGEMTP_FILE, Control.CommandType.GENERIC, context);
+    }
+
+    public static boolean isFastChargeMtpActive() {
+        return Utils.readFile(FASTCHARGEMTP_FILE).equals("1");
+    }
+
+    public static boolean hasFastChargeMtpEnable() {
+        if (FASTCHARGEMTP_FILE == null) for (String file : FASTCHARGEMTP_ARRAY)
+            if (Utils.existFile(file)) {
+                FASTCHARGEMTP_FILE = file;
+                return true;
+            }
+        return FASTCHARGEMTP_FILE != null;
     }
 
     public static void setFastChargeCurrent(int value, Context context) {
@@ -90,8 +109,16 @@ public class Battery implements Constants {
         return Utils.stringToInt(Utils.readFile(FORCE_FAST_CHARGE_CURRENT));
     }
 
+    public static void setFastChargeUSBCurrent(int value, Context context) {
+        Control.runCommand(String.valueOf(value), FORCE_FAST_CHARGE_USB_CURRENT, Control.CommandType.GENERIC, context);
+    }
+
+    public static int getFastChargeUSBCurrent() {
+        return Utils.stringToInt(Utils.readFile(FORCE_FAST_CHARGE_USB_CURRENT));
+    }
+
     public static boolean isForceFastChargeActive() {
-        return Utils.readFile(FORCE_FAST_CHARGE).equals("1");
+        return Utils.readFile(FORCE_FAST_CHARGE).equals("2");
     }
 
     public static boolean hasForceFastCharge() {
@@ -100,6 +127,10 @@ public class Battery implements Constants {
 
     public static boolean hasForceFastChargeCurrent() {
         return Utils.existFile(FORCE_FAST_CHARGE_CURRENT);
+    }
+
+    public static boolean hasForceFastChargeUSBCurrent() {
+        return Utils.existFile(FORCE_FAST_CHARGE_USB_CURRENT);
     }
 
     public static boolean hasChargeLevelControl() {

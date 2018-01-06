@@ -1017,11 +1017,18 @@ public interface Constants {
 
     // Battery
     String FORCE_FAST_CHARGE = "/sys/kernel/fast_charge/force_fast_charge";
-    String FORCE_FAST_CHARGE_CURRENT = "/sys/kernel/fast_charge_current/force_fast_charge_current";
+    String FORCE_FAST_CHARGE_CURRENT = "/sys/kernel/fast_charge/ac_charge_level";
+    String FORCE_FAST_CHARGE_USB_CURRENT = "/sys/kernel/fast_charge/usb_charge_level";
     String BLX = "/sys/devices/virtual/misc/batterylifeextender/charging_limit";
     String CHARGE_LEVEL = "/sys/kernel/charge_levels";
     String AC_CHARGE_LEVEL = CHARGE_LEVEL + "/charge_level_ac";
     String USB_CHARGE_LEVEL = CHARGE_LEVEL + "/charge_level_usb";
+
+    // FastCharge MTP
+    String[] FASTCHARGEMTP_ARRAY = {
+            "/sys/kernel/fast_charge/use_mtp_during_fast_charge",
+            "/sys/kernel/fast_charge_usb/use_mtp_during_fast_charge",
+    };
 
     String CHARGE_RATE = "sys/kernel/thundercharge_control";
     String CHARGE_RATE_ENABLE = CHARGE_RATE + "/enabled";

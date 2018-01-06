@@ -1,3 +1,4 @@
+
 /*
  * Copyright (C) 2015 Willi Ye
  *
@@ -52,10 +53,12 @@ PopupCardView.DPopupCard.OnDPopupCardListener, SwitchCardView.DSwitchCard.OnDSwi
     private PopupCardView.DPopupCard mBclMaxFreqCard;
     private SeekBarCardView.DSeekBarCard mBclVphLowCard, mBclVphHighCard;
 
+    private SwitchCardView.DSwitchCard mFastChargeMtpCard;
     private SeekBarCardView.DSeekBarCard mBlxCard, mACLevelCard, mUSBLevelCard;
 
     private SwitchCardView.DSwitchCard mCustomChargeRateEnableCard;
     private SeekBarCardView.DSeekBarCard mForceFastChargeCurrentCard;
+    private SeekBarCardView.DSeekBarCard mForceFastChargeUSBCurrentCard;
     private SeekBarCardView.DSeekBarCard mChargingRateCard;
 
     private SwitchCardView.DSwitchCard mC0StateCard, mC1StateCard, mC2StateCard, mC3StateCard;
@@ -72,6 +75,7 @@ PopupCardView.DPopupCard.OnDPopupCardListener, SwitchCardView.DSwitchCard.OnDSwi
         batteryTemperatureInit();
         batteryChargingTypeInit();
         if (Battery.hasForceFastCharge()) forceFastChargeInit();
+        if (Battery.hasFastChargeMtpEnable()) FastChargeMtpInit();
         if (Battery.hasChargeLevelControl()) chargeLevelControlInit();
         if (Battery.hasBlx()) blxInit();
         if (Battery.hasChargeRate()) chargerateInit();
@@ -154,16 +158,38 @@ PopupCardView.DPopupCard.OnDPopupCardListener, SwitchCardView.DSwitchCard.OnDSwi
 
         if(Battery.hasForceFastChargeCurrent()){
             List<String> list = new ArrayList<>();
-            for (int i = 0; i < 2200; i+=10) list.add(String.valueOf(i));
+            for (int i = 0; i < 2500; i+=100) list.add(String.valueOf(i));
 
             mForceFastChargeCurrentCard = new SeekBarCardView.DSeekBarCard(list);
             mForceFastChargeCurrentCard.setTitle(getString(R.string.usb_fast_charge_current));
             mForceFastChargeCurrentCard.setDescription(getString(R.string.usb_fast_charge_current_summary));
-            mForceFastChargeCurrentCard.setProgress(Battery.getFastChargeCurrent() / 10);
+            mForceFastChargeCurrentCard.setProgress(Battery.getFastChargeCurrent() / 100);
             mForceFastChargeCurrentCard.setOnDSeekBarCardListener(this);
             addView(mForceFastChargeCurrentCard);
         }
 
+	 if(Battery.hasForceFastChargeUSBCurrent()){
+            List<String> list = new ArrayList<>();
+            for (int i = 0; i < 1600; i+=100) list.add(String.valueOf(i));
+
+            mForceFastChargeUSBCurrentCard = new SeekBarCardView.DSeekBarCard(list);
+            mForceFastChargeUSBCurrentCard.setTitle(getString(R.string.usb_fast_charge_usb_current));
+            mForceFastChargeUSBCurrentCard.setDescription(getString(R.string.usb_fast_charge_usb_current_summary));
+            mForceFastChargeUSBCurrentCard.setProgress(Battery.getFastChargeUSBCurrent() / 100);
+            mForceFastChargeUSBCurrentCard.setOnDSeekBarCardListener(this);
+            addView(mForceFastChargeUSBCurrentCard);
+        }
+
+    }
+
+    private void FastChargeMtpInit() {
+            mFastChargeMtpCard = new SwitchCardView.DSwitchCard();
+            mFastChargeMtpCard.setTitle(getString(R.string.fastcharge_mtp));
+            mFastChargeMtpCard.setDescription(getString(R.string.fastcharge_mtp_summary));
+            mFastChargeMtpCard.setChecked(Battery.isFastChargeMtpActive());
+            mFastChargeMtpCard.setOnDSwitchCardListener(this);
+
+            addView(mFastChargeMtpCard);
     }
 
     private void chargeLevelControlInit(){
@@ -419,6 +445,8 @@ PopupCardView.DPopupCard.OnDPopupCardListener, SwitchCardView.DSwitchCard.OnDSwi
     public void onChecked(SwitchCardView.DSwitchCard dSwitchCard, boolean checked) {
         if (dSwitchCard == mForceFastChargeCard)
             Battery.activateForceFastCharge(checked, getActivity());
+        else if (dSwitchCard == mFastChargeMtpCard)
+            Battery.activateFastChargeMtp(checked, getActivity());
         else if (dSwitchCard == mCustomChargeRateEnableCard)
             Battery.activateCustomChargeRate(checked, getActivity());
         else if (dSwitchCard == mC0StateCard)
@@ -447,7 +475,9 @@ PopupCardView.DPopupCard.OnDPopupCardListener, SwitchCardView.DSwitchCard.OnDSwi
         else if (dSeekBarCard == mACLevelCard)
             Battery.setChargeLevelControlAC(position * 10, getActivity());
         else if (dSeekBarCard == mForceFastChargeCurrentCard)
-            Battery.setFastChargeCurrent(position * 10, getActivity());
+            Battery.setFastChargeCurrent(position * 100, getActivity());
+        else if (dSeekBarCard == mForceFastChargeUSBCurrentCard)
+            Battery.setFastChargeUSBCurrent(position * 100, getActivity());
         else if (dSeekBarCard == mUSBLevelCard)
             Battery.setChargeLevelControlUSB(position * 10, getActivity());
         else if (dSeekBarCard == mChargingRateCard)
