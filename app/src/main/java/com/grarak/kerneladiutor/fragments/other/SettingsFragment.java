@@ -155,7 +155,7 @@ public class SettingsFragment extends RecyclerViewFragment {
 
         PopupCardView.DPopupCard mApplyonbootDelayCard = new PopupCardView.DPopupCard(list);
         mApplyonbootDelayCard.setDescription(getString(R.string.delay));
-        mApplyonbootDelayCard.setItem(Utils.getInt("applyonbootdelay", 0, getActivity()) + " " + getString(R.string.sec));
+        mApplyonbootDelayCard.setItem(Utils.getInt("applyonbootdelay", 10, getActivity()) + " " + getString(R.string.sec));
         mApplyonbootDelayCard.setOnDPopupCardListener(new PopupCardView.DPopupCard.OnDPopupCardListener() {
             @Override
             public void onItemSelected(PopupCardView.DPopupCard dPopupCard, int position) {

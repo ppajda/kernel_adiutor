@@ -17,14 +17,22 @@ package com.grarak.kerneladiutor.utils.kernel;
 
 import android.content.Context;
 
+import com.grarak.kerneladiutor.R;
 import com.grarak.kerneladiutor.utils.Constants;
 import com.grarak.kerneladiutor.utils.Utils;
 import com.grarak.kerneladiutor.utils.root.Control;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Created by willi on 03.01.15.
  */
 public class Battery implements Constants {
+
+    private static String[] mForceFastChargeItems;
 
     public static int getChargingCurrent() {
         return Utils.stringToInt(Utils.readFile(BATTERY_CHARGING_CURRENT));
@@ -78,27 +86,39 @@ public class Battery implements Constants {
         return Utils.existFile(BLX);
     }
 
-    private static String FASTCHARGEMTP_FILE;
+    public static String[] getForceFastChargeItems(Context context) {
+        if (mForceFastChargeItems == null && context != null)
+            mForceFastChargeItems = context.getResources().getStringArray(R.array.force_fast_charge_items);
+        return mForceFastChargeItems;
+    }
 
-    public static void activateForceFastCharge(boolean active, Context context) {
-        Control.runCommand(active ? "2" : "0", FORCE_FAST_CHARGE, Control.CommandType.GENERIC, context);
+    public static boolean isForceFastChargeActive() {
+        return Utils.readFile(FORCE_FAST_CHARGE).equals("2");
+    }
+
+    public static boolean hasForceFastCharge() {
+        return Utils.existFile(FORCE_FAST_CHARGE);
+    }
+
+    public static int getForceFastCharge() {
+        String value = Utils.readFile(FORCE_FAST_CHARGE);
+        return Utils.stringToInt(value);
+    }
+
+    public static void setForceFastCharge(int value, Context context) {
+        Control.runCommand(String.valueOf(value), FORCE_FAST_CHARGE, Control.CommandType.GENERIC, context);
     }
 
     public static void  activateFastChargeMtp(boolean active, Context context) {
-        Control.runCommand(active ? "1" : "0", FASTCHARGEMTP_FILE, Control.CommandType.GENERIC, context);
+        Control.runCommand(active ? "1" : "0", FORCE_FAST_CHARGE_MTP, Control.CommandType.GENERIC, context);
     }
 
     public static boolean isFastChargeMtpActive() {
-        return Utils.readFile(FASTCHARGEMTP_FILE).equals("1");
+        return Utils.readFile(FORCE_FAST_CHARGE_MTP).equals("1");
     }
 
     public static boolean hasFastChargeMtpEnable() {
-        if (FASTCHARGEMTP_FILE == null) for (String file : FASTCHARGEMTP_ARRAY)
-            if (Utils.existFile(file)) {
-                FASTCHARGEMTP_FILE = file;
-                return true;
-            }
-        return FASTCHARGEMTP_FILE != null;
+        return Utils.existFile(FORCE_FAST_CHARGE_MTP);
     }
 
     public static void setFastChargeCurrent(int value, Context context) {
@@ -115,14 +135,6 @@ public class Battery implements Constants {
 
     public static int getFastChargeUSBCurrent() {
         return Utils.stringToInt(Utils.readFile(FORCE_FAST_CHARGE_USB_CURRENT));
-    }
-
-    public static boolean isForceFastChargeActive() {
-        return Utils.readFile(FORCE_FAST_CHARGE).equals("2");
-    }
-
-    public static boolean hasForceFastCharge() {
-        return Utils.existFile(FORCE_FAST_CHARGE);
     }
 
     public static boolean hasForceFastChargeCurrent() {
@@ -183,7 +195,6 @@ public class Battery implements Constants {
         }
     }
 
-
     public static boolean isC1StateActive() {
         return Utils.readFile(C1STATE).equals("1");
     }
@@ -198,7 +209,6 @@ public class Battery implements Constants {
             Control.runCommand(active ? "1" : "0", path.replace("0", Integer.toString(i)), Control.CommandType.GENERIC, context);
         }
     }
-
 
     public static boolean isC2StateActive() {
         return Utils.readFile(C2STATE).equals("1");
@@ -240,7 +250,6 @@ public class Battery implements Constants {
             return Utils.readFile(BATTERY_LED).contains("battery-full");
         return false;
     }
-
 
     public static void activateBcl(boolean active, Context context) {
         if (!active && Battery.hasBclHotplug() && Battery.isBclHotplugActive()) {

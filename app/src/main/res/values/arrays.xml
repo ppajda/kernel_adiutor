@@ -26,6 +26,13 @@
         <item>@string/load_balancer</item>
     </string-array>
 
+    <!-- Battery -->
+    <string-array name="force_fast_charge_items">
+        <item>@string/disabled</item>
+        <item>@string/enabled</item>
+        <item>@string/customcr</item>
+    </string-array>
+
     <!-- Kernel Samepage Merging -->
     <string-array name="ksm_infos">
         <item>@string/ksm_full_scans</item>

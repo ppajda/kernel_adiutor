@@ -138,6 +138,7 @@
     <string name="disabled2">(Disabled)</string>
     <string name="enabled2">(Enabled)</string>
     <string name="aggressive2">(Aggressive)</string>
+    <string name="customcr">Custom Charge Rate</string>
     <string name="cpu_quiet">CPUQuiet</string>
     <string name="cpu_quiet_summary">CPUQuiet implements pluggable policies for forcing Cores into quiescent state. Appropriate policies will save power without hurting performance.</string>
     <string name="cpu_quiet_governor">CPUQuiet Governor</string>
@@ -638,10 +639,10 @@
     <string name="battery_health">Battery Health</string>
     <string name="usb_fast_charge">USB Fast Charge</string>
     <string name="usb_fast_charge_summary">Device will charge faster when connected with USB. Replug your charger when changing this option.</string>
-    <string name="usb_fast_charge_current">USB Fast Charge Current</string>
-    <string name="usb_fast_charge_current_summary">Device will charge with this current when connected with USB.</string>
-    <string name="usb_fast_charge_usb_current">USB FastCharge Level</string>
-    <string name="usb_fast_charge_usb_current_summary">Device will charge with this current when connected with USB (In mAh).</string>
+    <string name="usb_fast_charge_current">AC Fast Charge Current</string>
+    <string name="usb_fast_charge_current_summary">Device will charge with this current when connected with charger.</string>
+    <string name="usb_fast_charge_usb_current">USB Fast Charge Current</string>
+    <string name="usb_fast_charge_usb_current_summary">Device will charge with this current when connected with USB.</string>
     <string name="fastcharge_mtp">FastCharge on MTP</string>
     <string name="fastcharge_mtp_summary">Enable FastCharge on MTP</string>
     <string name="charge_levels">Charge Levels Interface</string>

@@ -31,7 +31,7 @@ import com.grarak.kerneladiutor.BuildConfig;
 public class AboutusFragment extends RecyclerViewFragment {
 
     private final String APP_SOURCE = "https://github.com/ppajda/kernel_adiutor/";
-    private final String XDA_LINK = "https://forum.xda-developers.com/lg-g3";
+    private final String XDA_LINK = "https://forum.xda-developers.com/lg-g3/development/kernel-lineagextd-nougat-oreo-t3723269";
 
     @Override
     public boolean showApplyOnBoot() {
