@@ -58,7 +58,7 @@ public class SoundFragment extends RecyclerViewFragment implements SwitchCardVie
         if (Sound.hasHandsetMicrophoneGain()) handsetMicrophoneGainInit();
         if (Sound.hasCamMicrophoneGain()) camMicrophoneGainInit();
         if (Sound.hasSpeakerGain()) speakerGainInit();
-        // if (Sound.hasHeadphonePowerAmpGain()) headphonePowerAmpGainInit();
+        if (Sound.hasHeadphonePowerAmpGain()) headphonePowerAmpGainInit();
         if (Sound.hasMicrophoneGain()) microphoneGainInit();
         if (Sound.hasVolumeGain()) volumeGainInit();
     }
