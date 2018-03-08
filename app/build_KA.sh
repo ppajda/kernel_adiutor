@@ -32,7 +32,7 @@ SIGN_FOLDER=/home/pajdek/ZipScriptSign;
 # out app folder and out app name
 
 OUT_FOLDER=$FOLDER/app/build/outputs/apk/release;
-APP_FINAL_NAME=KernelAdiutor.apk;
+APP_FINAL_NAME=XTDKernelAdiutor.apk;
 
 #making start here...
 contains() {
