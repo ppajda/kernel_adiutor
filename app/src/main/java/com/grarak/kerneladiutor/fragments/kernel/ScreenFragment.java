@@ -899,13 +899,7 @@ public class ScreenFragment extends RecyclerViewFragment implements SeekBarCardV
         } else if (dPopupCard == mScreenColorProilesCard) {
             if (position != 0) {
                 Screen.setScreenColorProfile(position - 1, Screen.getScreenColorProfiles(getActivity()), getActivity());
-                // This sleep isn't great, but the update was happening while the values were being set.
-                try {
-                    Thread.sleep(100);
-                } catch (InterruptedException ex) {
-                    Thread.currentThread().interrupt();
-                }
-                getActivity().getSupportFragmentManager().beginTransaction().detach(this).attach(this).commit();
+                RefreshFrag();
             }
         }
     }
@@ -1116,5 +1110,15 @@ public class ScreenFragment extends RecyclerViewFragment implements SeekBarCardV
         String whitePoint = Screen.getWhitePoint();
         mDsiPanelWhitePointCard.setDescription(whitePoint);
         mDsiPanelWhitePointCard.setValue(whitePoint);
+    }
+
+    private void RefreshFrag() {
+        view.invalidate();
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException ex) {
+            Thread.currentThread().interrupt();
+        }
+        getActivity().getSupportFragmentManager().beginTransaction().detach(this).attach(this).commit();
     }
 }
